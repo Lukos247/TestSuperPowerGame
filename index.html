@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperPower — Геополитическая стратегия</title>
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <header id="top-bar">
+      <div id="game-title">SuperPower</div>
+      <div id="player-country-info"></div>
+      <div id="game-controls">
+        <button id="btn-pause" title="Пауза (Пробел)">⏸</button>
+        <button id="btn-speed1" title="×1" class="active">▶</button>
+        <button id="btn-speed2" title="×2">▶▶</button>
+        <button id="btn-speed3" title="×5">▶▶▶</button>
+        <span id="current-date"></span>
+      </div>
+      <div id="resources-bar"></div>
+    </header>
+
+    <nav id="main-nav">
+      <button class="nav-btn active" data-panel="overview">Обзор</button>
+      <button class="nav-btn" data-panel="economy">Экономика</button>
+      <button class="nav-btn" data-panel="politics">Политика</button>
+      <button class="nav-btn" data-panel="military">Армия</button>
+      <button class="nav-btn" data-panel="diplomacy">Дипломатия</button>
+      <button class="nav-btn" data-panel="technology">Технологии</button>
+      <button class="nav-btn" data-panel="population">Население</button>
+      <button class="nav-btn" data-panel="espionage">Шпионаж</button>
+      <button class="nav-btn" data-panel="world">Мир</button>
+    </nav>
+
+    <main id="main-content">
+      <div id="panel-overview" class="panel active"></div>
+      <div id="panel-economy" class="panel"></div>
+      <div id="panel-politics" class="panel"></div>
+      <div id="panel-military" class="panel"></div>
+      <div id="panel-diplomacy" class="panel"></div>
+      <div id="panel-technology" class="panel"></div>
+      <div id="panel-population" class="panel"></div>
+      <div id="panel-espionage" class="panel"></div>
+      <div id="panel-world" class="panel"></div>
+    </main>
+
+    <aside id="notifications-panel">
+      <h3>События</h3>
+      <div id="notifications-list"></div>
+    </aside>
+
+    <!-- Country selection modal -->
+    <div id="country-select-modal" class="modal">
+      <div class="modal-content">
+        <h2>Выберите страну</h2>
+        <input type="text" id="country-search" placeholder="Поиск страны...">
+        <div id="country-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
