@@ -31,6 +31,35 @@ export class DiplomacySystem {
       if (!country.alliances) country.alliances = [];
       if (!country.sanctions) country.sanctions = [];
       if (!country.tradeAgreements) country.tradeAgreements = [];
+
+      // Normalise alliances: if stored as plain strings, convert to objects
+      country.alliances = country.alliances.map(a => {
+        if (typeof a === 'string') {
+          return { id: a.toLowerCase().replace(/\s+/g, '_'), name: a, members: [], type: 'political' };
+        }
+        return a;
+      });
+
+      // Normalise sanctions: ensure they are objects
+      country.sanctions = country.sanctions.filter(s => s && typeof s === 'object');
+    }
+
+    // Build alliance member lists from country data
+    const allianceMembers = new Map();
+    for (const [id, country] of this.engine.countries) {
+      for (const alliance of country.alliances) {
+        if (!allianceMembers.has(alliance.id)) {
+          allianceMembers.set(alliance.id, { ...alliance, members: [] });
+        }
+        allianceMembers.get(alliance.id).members.push(id);
+      }
+    }
+    // Sync members back to each country's alliance objects
+    for (const [, country] of this.engine.countries) {
+      for (const alliance of country.alliances) {
+        const fullAlliance = allianceMembers.get(alliance.id);
+        if (fullAlliance) alliance.members = [...fullAlliance.members];
+      }
     }
 
     // Synchronise the global organisations map with alliance data that might
@@ -600,7 +629,7 @@ export class DiplomacySystem {
           orgs.set(alliance.id, { ...alliance });
 
           // Ensure the id counter stays ahead
-          const numMatch = alliance.id.match(/alliance_(\d+)/);
+          const numMatch = (alliance.id || '').match(/alliance_(\d+)/);
           if (numMatch) {
             const num = parseInt(numMatch[1], 10);
             if (num >= this._nextAllianceId) {
